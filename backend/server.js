@@ -7,11 +7,34 @@ const app = express();
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 4000;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
-const allowedOrigins = CLIENT_URL.split(",")
-  .map((origin) => origin.trim())
+const normalizeOrigin = (origin = "") => origin.trim().replace(/\/+$/, "");
+const escapeForRegExp = (value = "") => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const configuredOrigins = CLIENT_URL.split(",")
+  .map((origin) => normalizeOrigin(origin))
   .filter(Boolean);
+const allowedOrigins = new Set(["http://localhost:5173", ...configuredOrigins]);
+const vercelPreviewPatterns = Array.from(allowedOrigins)
+  .filter((origin) => origin.endsWith(".vercel.app"))
+  .map((origin) => {
+    try {
+      const projectSlug = new URL(origin).hostname.split(".")[0];
+      return new RegExp(`^https://${escapeForRegExp(projectSlug)}(?:-[a-z0-9-]+)*\\.vercel\\.app$`, "i");
+    } catch {
+      return null;
+    }
+  })
+  .filter(Boolean);
+const isAllowedOrigin = (origin) => {
+  const normalizedOrigin = normalizeOrigin(origin);
+
+  if (allowedOrigins.has(normalizedOrigin)) {
+    return true;
+  }
+
+  return vercelPreviewPatterns.some((pattern) => pattern.test(normalizedOrigin));
+};
 const corsOriginValidator = (origin, callback) => {
-  if (!origin || allowedOrigins.includes(origin)) {
+  if (!origin || isAllowedOrigin(origin)) {
     callback(null, true);
     return;
   }

@@ -39,7 +39,15 @@ export const SocketProvider = ({ children }) => {
       setCheckoutSummary(summary);
       toast.success("Checkout opened for everyone");
     });
-    socket.on("server_error", ({ message }) => toast.error(message));
+    socket.on("server_error", ({ message }) => {
+      if (message === "Room not found.") {
+        toast.error("Session expired. Please create or join again.");
+        resetRoom();
+        return;
+      }
+
+      toast.error(message);
+    });
     socket.on("unauthorized_action", ({ message }) => toast.error(message));
     socket.on("conflict_alert", ({ message }) => toast(message, { icon: "!" }));
     socket.on("removed_from_room", ({ message }) => {

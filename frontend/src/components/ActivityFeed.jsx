@@ -29,7 +29,7 @@ const ActivityFeed = () => {
         </div>
       </div>
 
-      <div className="mt-6 max-h-[640px] space-y-3 overflow-y-auto pr-1">
+      <div className="mt-6 space-y-3 md:max-h-[640px] md:overflow-y-auto md:pr-1 xl:max-h-none xl:overflow-visible xl:pr-0">
         {activityFeed.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-slate-300 px-4 py-10 text-center text-slate-500">
             Activity will appear here as your team collaborates.

@@ -193,6 +193,22 @@ The app includes the following polished Tailwind-based components:
 
 ## Run Locally
 
+### Environment variables
+
+Frontend:
+
+```bash
+cd frontend
+copy .env.example .env
+```
+
+Backend:
+
+```bash
+cd backend
+copy .env.example .env
+```
+
 ### 1. Install backend dependencies
 
 ```bash
@@ -224,6 +240,17 @@ npm run dev
 ### 5. Open the app
 
 Visit `http://localhost:5173` in two or more browser tabs, create a room in one tab, and join it from the others using the generated session code.
+
+### Deployment environment variables
+
+Backend:
+
+- `PORT=4000` locally, or use the host-provided port in production
+- `CLIENT_URL=https://your-frontend-domain.vercel.app`
+
+Frontend:
+
+- `VITE_SOCKET_URL=https://your-backend-domain.onrender.com`
 
 ## Submission Notes
 

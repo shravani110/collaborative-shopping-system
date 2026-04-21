@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { enrichProducts, fallbackProducts } from "../data/products";
 
 const SocketContext = createContext(null);
-const SOCKET_URL = "http://localhost:4000";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:4000";
 
 export const SocketProvider = ({ children }) => {
   const socketRef = useRef(null);

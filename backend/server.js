@@ -5,18 +5,33 @@ import { Server } from "socket.io";
 
 const app = express();
 const httpServer = createServer(app);
+const PORT = process.env.PORT || 4000;
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+const allowedOrigins = CLIENT_URL.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const corsOriginValidator = (origin, callback) => {
+  if (!origin || allowedOrigins.includes(origin)) {
+    callback(null, true);
+    return;
+  }
+
+  callback(new Error(`Origin ${origin} is not allowed by CORS.`));
+};
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: corsOriginValidator,
     methods: ["GET", "POST"],
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: corsOriginValidator,
+  }),
+);
 app.use(express.json());
-
-const PORT = process.env.PORT || 4000;
 
 /**
  * In-memory room store for hackathon use.

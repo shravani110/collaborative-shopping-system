@@ -177,7 +177,7 @@ npm run dev
 
 ### 6. Open the app
 
-Visit `http://localhost:5173` in your browser.
+Visit `https://collaborative-shopping-system.vercel.app/` in your browser.
 
 To test collaboration:
 
@@ -185,23 +185,3 @@ To test collaboration:
 - Copy the generated room code
 - Join the same room from another tab or device
 
-## Environment Variables
-
-Backend:
-
-- `PORT=4000` for local development
-- `CLIENT_URL=http://localhost:5173`
-
-Frontend:
-
-- `VITE_SOCKET_URL=http://localhost:4000`
-
-## Summary
-
-This repository includes the required README sections:
-
-- System architecture diagram
-- Conflict resolution strategy chosen and why
-- Role enforcement approach
-- Known limitations
-- Local setup and run instructions
